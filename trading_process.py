@@ -19,6 +19,11 @@ def _run_session():
                     self.strategy.calculate_signals(event)
                     self.portfolio_handler.update_portfolio_value()
                     self.statistics.update(event.time, self.portfolio_handler)
-        elif expression:
-            pass
-
+        elif event.type == EventType.SIGANL:
+            self.portfolio_handler.on_signal(event)
+        elif event.type == EventType.ORDER:
+            self.execution_handler.execute_order(event)
+        elif event.type == EventType.FILL:
+            self.portfolio_handler.on_fill(event)
+        else:
+            raise NotImplemented("Unsupported event.type '%s'" % event.type)

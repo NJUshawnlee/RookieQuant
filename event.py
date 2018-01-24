@@ -10,6 +10,10 @@ class Event(object):
     def typename(self):
         return self.type.name
 
+
+class TickEvent(Event):
+    pass
+
 class BarEvent(Event):
     
     def __init__(
@@ -26,9 +30,14 @@ class BarEvent(Event):
         self.low_price = low_price
         self.close_price = close_price
         self.volume = volume
-        self.adj_close_price = adj_close_price
-    
+        self.adj_close_price = adj_close_price    
 
-
-class TickEvent(Event):
+class SignalEvent(Event):
     pass
+
+class OrderEvent(Event):
+    pass
+
+class FillEvent(Event):
+    pass
+
