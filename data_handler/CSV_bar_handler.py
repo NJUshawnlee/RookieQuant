@@ -8,15 +8,13 @@ from ..event import BarEvent
 class CsvBarDataHandler(BarHandlerBase):
 
     def __init__(
-        self, csv_dir, events_queue,
-        instrument, init_tickers=None,
+        self, csv_dir, events_queue, init_tickers=None,
         start_time=None, end_time=None, period=86400
         calc_adj_returns=False
     ):
 
         self.csv_dir = csv_dir
         self.events_queue = events_queue
-        self.instrument = instrument
         self.continue_backtest = True
         self.tickers = {}
         self.tickers_data = {}
@@ -97,7 +95,6 @@ class CsvBarDataHandler(BarHandlerBase):
     def _create_event(self, index, ticker, row):
 
 
-        instrument = self.instrument
         period = self.period
         open_price = row["Open"]
         high_price = row["High"]
@@ -106,13 +103,17 @@ class CsvBarDataHandler(BarHandlerBase):
         adj_close_price = row["Adj Close"]
         volume = int(row['Volume'])
         bev = BarEvent(
-            instrument, ticker, index, period, 
+            ticker, index, period, 
             open_price, high_price, low_price, close_price,
             volume, adj_close_price
         )
 
     def _store_event(self, event):
-        pass
+
+        ticker = event.ticker
+        self.tickers[ticker]["close"] = event.close
+        self.tickers[ticker]["adj_close"] = event.adj_close_price
+        self.tickers[ticker]["timestamp"] = event.time
     
     def stream_next(self):
         try:

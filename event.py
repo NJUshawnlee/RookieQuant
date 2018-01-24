@@ -13,12 +13,11 @@ class Event(object):
 class BarEvent(Event):
     
     def __init__(
-        self, instrument, ticker, time, period
+        self,  ticker, time, period
         open_price, high_price, low_price,
         close_price, volume, adj_close_price=None
     ):
         self.type = EventType.BAR
-        self.instrument = instrument
         self.ticker = ticker
         self.time = time
         self.period = period
