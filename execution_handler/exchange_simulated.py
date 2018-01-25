@@ -38,7 +38,7 @@ class ExchangeSimulatedExecutionHandler(AbstractExecutionHandler):
                 fill_price = close_price
 
             exchange = "China"
-            commission = self.cal_exchange_commission(quantity, fill_price
+            commission = self.cal_exchange_commission(quantity, fill_price)
             
             fill_event = FillEvent(
                 timestamp, ticker,

@@ -17,7 +17,7 @@ class TickEvent(Event):
 class BarEvent(Event):
     
     def __init__(
-        self,  ticker, time, period
+        self,  ticker, time, period,
         open_price, high_price, low_price,
         close_price, volume, adj_close_price=None
     ):
