@@ -14,8 +14,8 @@ class Position(object):
         self.init_price = init_price
         self.init_commission = init_commission
 
-        self.realised_pnl = 0
-        self.unrealised_pnl = 0
+        self.realized_pnl = 0
+        self.unrealized_pnl = 0
 
         self.buys = 0
         self.sells = 0
@@ -50,13 +50,13 @@ class Position(object):
 
         midpoint = (bid + ask) / 2
         self.market_value = self.quantity * midpoint * sign(self.net)
-        self.unrealised_pnl = self.market_value - self.cost_basis
+        self.unrealized_pnl = self.market_value - self.cost_basis
 
     
     def transact_shares(self, action, quantity, price, commission):
 
 
-        self.total_commission =+ commission
+        self.total_commission += commission
 
         if action == "BOT":
             self.avg_bot = (
@@ -69,7 +69,7 @@ class Position(object):
                 ) / (self.buys + quantity)
 
         elif  self.action == "SLD":
-            self.realised_pnl += quantity*(
+            self.realized_pnl += quantity*(
                 self.avg_price - price
             ) - commission
         self.buys += quantity
@@ -86,7 +86,7 @@ class Position(object):
                     price * quantity -commission
                 ) / (self.sells + quantity)
             elif self.action = "BOT":
-                self.realised_pnl += quantity*(
+                self.realized_pnl += quantity*(
                     price - self.avg_price
                 ) - commission
             self.sells += quantity

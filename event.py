@@ -33,11 +33,47 @@ class BarEvent(Event):
         self.adj_close_price = adj_close_price    
 
 class SignalEvent(Event):
-    pass
+    
+    def __init__(self, ticker, action, suggested_quantity=None):
+
+        self.type = EventType.SIGNAL
+        self.ticker = ticker
+        self.action = action
+        self.suggested_quantity = suggested_quantity
 
 class OrderEvent(Event):
-    pass
+    
+    def __init__(self, ticker, action, quantity):
+
+        self.type = EventType.ORDER
+        self.ticker = ticker
+        self.action = action
+        self.quantity = quantity
+
+    def print_order(self):
+        
+        print(
+            "Order: Ticker=%s, Action=%s, Quantity=%s" % (
+                self.ticker, self.action, self.quantity
+            )
+        )
+
 
 class FillEvent(Event):
-    pass
+    
+    def __init__(
+        self, timestamp, ticker,
+        action, quantity,
+        exchange, price,
+        commission
+    ):
+
+        self.type =EventType.FILL
+        self.timestamp = timestamp
+        self.ticker = ticker
+        self.action = action
+        self.quantity = quantity
+        self.exchange = exchange
+        self.price = price
+        self.commission = commission
 

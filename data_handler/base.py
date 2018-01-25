@@ -10,7 +10,16 @@ class DataHandlerBase(object):
         pass
 
     def get_last_timestamp(self, ticker):
-        pass
+        
+        if ticker in self.tickers:
+            timestamp = self.tickers[ticker]["timestamp"]
+            return timestamp
+        else:
+            print(
+                "Timestamp for ticker %s is not"
+                "available from the %s."%(ticker, self.__class__.__name__)
+            )
+
 
     pass
 

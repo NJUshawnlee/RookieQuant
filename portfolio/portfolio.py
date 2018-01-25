@@ -10,12 +10,13 @@ class Portfolio(object):
         self.cur_cash = cash
         self.positions = {}
         self.closed_positions = []
-        self.realised_pnl = 0
+        self.realized_pnl = 0
 
     def _update_portfolio(self, event):
 
-        self.unrealised_pnl = 0
-        # do some corrections here 
+        self.unrealized_pnl = 0
+        # do some corrections here
+        # To be testified in the future 
         self.equity = 0 
         self.equity += self.cur_cash
         #so high updating  frequency here
@@ -30,9 +31,9 @@ class Portfolio(object):
                 bid = close_price
                 ask = close_price
             pt.update_market_value(bid, ask)
-            self.unrealised_pnl += pt.unrealised_pnl
+            self.unrealized_pnl += pt.unrealized_pnl
             self.equity += (
-                pt.market_value - pt.cost_basis + pt.realised_pnl
+                pt.market_value - pt.cost_basis + pt.realized_pnl
             )
 
     def  _add_position(
@@ -80,7 +81,7 @@ class Portfolio(object):
 
             if self.positions[ticker].quantity == 0:
                 closed = self.positions.pop(ticker)
-                self.realised_pnl += closed.realised_pnl
+                self.realized_pnl += closed.realized_pnl
                 self.closed_positions.append(closed)
             
             self._update_portfolio()
