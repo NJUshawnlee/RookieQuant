@@ -1,5 +1,7 @@
-from .base import AbstractExecutionHandler
-from ..event import (FillEvent, EventType)
+import sys
+sys.path.append("..")
+from execution_handler.base import AbstractExecutionHandler
+from event import (FillEvent, EventType)
 
 
 class ExchangeSimulatedExecutionHandler(AbstractExecutionHandler):
@@ -29,7 +31,7 @@ class ExchangeSimulatedExecutionHandler(AbstractExecutionHandler):
             action = event.action
             quantity = event.quantity
 
-            # tick data_handler to be made later
+            # tick data_handler1 to be made later
             if self.data_handler.istick():
                 pass
             

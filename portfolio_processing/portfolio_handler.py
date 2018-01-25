@@ -1,5 +1,8 @@
-from .order.suggested import SuggestedOrder
-from .portfolio import Portfolio
+import sys
+sys.path.append("..")
+
+from order.suggested import SuggestedOrder
+from portfolio_processing.portfolio import Portfolio
 
 
 class PortfolioHandler(object):

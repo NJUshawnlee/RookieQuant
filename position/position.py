@@ -68,12 +68,12 @@ class Position(object):
                     price * quantity + commission
                 ) / (self.buys + quantity)
 
-        elif  self.action == "SLD":
-            self.realized_pnl += quantity*(
+            elif  self.action == "SLD":
+                self.realized_pnl += quantity*(
                 self.avg_price - price
-            ) - commission
-        self.buys += quantity
-        self.total_bot = self.buys * self.avg_bot
+                ) - commission
+            self.buys += quantity
+            self.total_bot = self.buys * self.avg_bot
 
         # action == "SLD"
         else:
@@ -85,7 +85,7 @@ class Position(object):
                     self.avg_price * self.sells + 
                     price * quantity -commission
                 ) / (self.sells + quantity)
-            elif self.action = "BOT":
+            elif self.action == "BOT":
                 self.realized_pnl += quantity*(
                     price - self.avg_price
                 ) - commission

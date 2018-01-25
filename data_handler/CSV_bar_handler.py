@@ -1,15 +1,16 @@
 import os
+import pandas as pd
+import sys
+sys.path.append("..")
 
-import pandas as pd 
+from  data_handler.base import BarDataHandlerBase
+from  event import BarEvent
 
-from .base import BarHandlerBase
-from ..event import BarEvent
-
-class CsvBarDataHandler(BarHandlerBase):
+class CsvBarDataHandler(BarDataHandlerBase):
 
     def __init__(
         self, csv_dir, events_queue, init_tickers=None,
-        start_time=None, end_time=None, period=86400
+        start_time=None, end_time=None, period=86400,
         calc_adj_returns=False
     ):
 

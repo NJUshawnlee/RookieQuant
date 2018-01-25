@@ -1,4 +1,7 @@
-from .base import AbstractPositionSizer
+import sys
+sys.path.append("..")
+
+from position_sizer.base import AbstractPositionSizer
 
 
 class FixedPositionSizer(AbstractPositionSizer):

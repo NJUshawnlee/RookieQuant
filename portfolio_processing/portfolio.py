@@ -1,4 +1,7 @@
-from ..position.position import Position
+import sys
+sys.path.append("..")
+
+from position.position import Position
 
 
 class Portfolio(object):
@@ -23,7 +26,7 @@ class Portfolio(object):
         #and can be reduced upon finishing the framework 
         for ticker in self.positions:
             pt = self.positions[ticker]
-            # tick data_handler to be made later
+            # tick data_handler1 to be made later
             if self.data_handler.istick():
                 pass
             else:
@@ -41,7 +44,7 @@ class Portfolio(object):
         quantity, price, commission
     ):
         if ticker not in self.positions:
-            # tick data_handler to be made later
+            # tick data_handler1 to be made later
             if self.data_handler.istick():
                 pass
             else:
@@ -70,7 +73,7 @@ class Portfolio(object):
             self.positions[ticker].transact_shares(
                 action, quantity, price, commission
             )
-            # tick data_handler to be made later
+            # tick data_handler1 to be made later
             if self.data_handler.istick():
                 pass
             else:

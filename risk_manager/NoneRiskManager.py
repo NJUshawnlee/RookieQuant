@@ -1,5 +1,8 @@
-from .base import AbstractRiskManager
-from ..event import OrderEvent
+import sys
+sys.path.append("..")
+
+from risk_manager.base import AbstractRiskManager
+from event import OrderEvent
 
 class NoneRiskManager(AbstractRiskManager):
 

@@ -1,12 +1,12 @@
 import queue
 from datetime import datetime
-from .event import EventType
-from .data_handler.CSV_bar_handler import CsvBarDataHandler
-from .position_sizer.fixed import FixedPositionSizer
-from .risk_manager.NoneRiskManger import NoneRiskManger
-from .portfolio.portfolio_handler import PortfolioHandler
-from .execution_handler.exchange_simulated import ExchangeSimulatedExecutionHandler
-from .statistics.BasicStatistics import BasicStatisticsReport
+from event import EventType
+from data_handler.CSV_bar_handler import CsvBarDataHandler
+from position_sizer.fixed import FixedPositionSizer
+from risk_manager.NoneRiskManager import NoneRiskManager
+from portfolio_processing.portfolio_handler import PortfolioHandler
+from execution_handler.exchange_simulated import ExchangeSimulatedExecutionHandler
+from statistics_report.BasicStatistics import BasicStatisticsReport
 
 class TradingBacktesting(object):
 
@@ -69,7 +69,7 @@ class TradingBacktesting(object):
                 self.data_handler
             )
 
-        #statistics model to be added latter
+        #statistics_report model to be added latter
         if self.statistics is None:
             self.statistics = BasicStatisticsReport(
                 self.portfolio_handler
