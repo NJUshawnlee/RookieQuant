@@ -1,7 +1,4 @@
-import sys
-sys.path.append("..")
-
-from position.position import Position
+from RookieQuant.position.position import Position
 
 
 class Portfolio(object):
@@ -15,13 +12,13 @@ class Portfolio(object):
         self.closed_positions = []
         self.realized_pnl = 0
 
-    def _update_portfolio(self, event):
+    def _update_portfolio(self):
 
         self.unrealized_pnl = 0
         # do some corrections here
         # To be testified in the future 
-        self.equity = 0 
-        self.equity += self.cur_cash
+        self.equity = self.realized_pnl
+        self.equity += self.init_cash
         #so high updating  frequency here
         #and can be reduced upon finishing the framework 
         for ticker in self.positions:

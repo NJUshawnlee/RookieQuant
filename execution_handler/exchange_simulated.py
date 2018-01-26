@@ -1,7 +1,5 @@
-import sys
-sys.path.append("..")
-from execution_handler.base import AbstractExecutionHandler
-from event import (FillEvent, EventType)
+from RookieQuant.execution_handler.base import AbstractExecutionHandler
+from RookieQuant.event import (FillEvent, EventType)
 
 
 class ExchangeSimulatedExecutionHandler(AbstractExecutionHandler):
@@ -15,9 +13,10 @@ class ExchangeSimulatedExecutionHandler(AbstractExecutionHandler):
     
     #only commission considered 
     #more fees to be made future
-    def cal_exchange_commission(self, quantity, fill_event):
+    def cal_exchange_commission(self, quantity, fill_price):
+
         commission = max(
-            5, 0.001 * fill_price * quantity 
+            5, 0.001 * fill_price * quantity
         )
         return commission
 
@@ -34,7 +33,6 @@ class ExchangeSimulatedExecutionHandler(AbstractExecutionHandler):
             # tick data_handler1 to be made later
             if self.data_handler.istick():
                 pass
-            
             else:
                 close_price = self.data_handler.get_last_close(ticker)
                 fill_price = close_price

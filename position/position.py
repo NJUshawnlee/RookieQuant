@@ -35,7 +35,7 @@ class Position(object):
             self.avg_bot = self.init_price
             self.total_bot = self.buys * self.avg_bot
             self.avg_price = (self.init_price * self.quantity + self.init_commission) / self.quantity
-            self.cost.basis  = self.quantity * self.avg_price
+            self.cost_basis  = self.quantity * self.avg_price
         else: # action == "SLD"
             self.sells = self.quantity
             self.avg_sld = self.init_price

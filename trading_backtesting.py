@@ -1,12 +1,14 @@
 import queue
 from datetime import datetime
-from event import EventType
-from data_handler.CSV_bar_handler import CsvBarDataHandler
-from position_sizer.fixed import FixedPositionSizer
-from risk_manager.NoneRiskManager import NoneRiskManager
-from portfolio_processing.portfolio_handler import PortfolioHandler
-from execution_handler.exchange_simulated import ExchangeSimulatedExecutionHandler
-from statistics_report.BasicStatistics import BasicStatisticsReport
+from RookieQuant.event import EventType
+from RookieQuant.data_handler.CSV_bar_handler import CsvBarDataHandler
+from RookieQuant.position_sizer.fixed import FixedPositionSizer
+from RookieQuant.risk_manager.NoneRiskManager import NoneRiskManager
+from RookieQuant.portfolio_processing.portfolio_handler import PortfolioHandler
+from RookieQuant.execution_handler.exchange_simulated import ExchangeSimulatedExecutionHandler
+from RookieQuant.statistics_report.BasicStatistics import BasicStatisticsReport
+
+
 
 class TradingBacktesting(object):
 
@@ -40,12 +42,11 @@ class TradingBacktesting(object):
 
         if self.data_handler is None:
             self.data_handler = CsvBarDataHandler(
-        #the csv_dir to be added later
-            csv.dir, 
-            self.events_queue, 
-            self.tickers,
-            self.start_time, 
-            self.end_time
+            csv_dir="H:\Github\RookieQuant\data",
+            events_queue=self.events_queue,
+            init_tickers=self.tickers,
+            start_time=self.start_time,
+            end_time=self.end_time
             )
 
         if self.position_sizer is None:
@@ -80,7 +81,7 @@ class TradingBacktesting(object):
         return self.data_handler.continue_backtest
 
     def _run_backtesting(self):
-        while _continue_loop_condition():
+        while self._continue_loop_condition():
             try:
                 event = self.events_queue.get(False)
             except queue.Empty:
@@ -96,7 +97,7 @@ class TradingBacktesting(object):
                         self.portfolio_handler.update_portfolio_value()
                         self.statistics.update(event.time, self.portfolio_handler)
 
-                    elif event.type == EventType.SIGANL:
+                    elif event.type == EventType.SIGNAL:
                         self.portfolio_handler.on_signal(event)
                     elif event.type == EventType.ORDER:
                         self.execution_handler.execute_order(event)
@@ -111,10 +112,11 @@ class TradingBacktesting(object):
         results = self.statistics.get_results()
         print("---------------------------------")
         print("Backtest complete.")
+        print(results['drawdowns'])
         print("Sharpe Ratio: %0.2f" % results["sharpe"])
+        print("Max Drawdown: %0.2f" % results["max_drawdown"])
         print(
             "Max Drawdown: %0.2f%%" % (
-                results["max_drawdown_pct"] * 100.0
+                results["max_drawdown_pct"]
             )
         )
-        #statistics_model to be added

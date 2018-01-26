@@ -1,8 +1,5 @@
-import sys
-sys.path.append("..")
-
-from order.suggested import SuggestedOrder
-from portfolio_processing.portfolio import Portfolio
+from RookieQuant.order.suggested import SuggestedOrder
+from RookieQuant.portfolio_processing.portfolio import Portfolio
 
 
 class PortfolioHandler(object):
@@ -28,7 +25,7 @@ class PortfolioHandler(object):
         order = SuggestedOrder(
             signal_event.ticker,
             signal_event.action,
-            quantity = quantity
+            quantity=quantity
         )
         return order
 
@@ -44,6 +41,7 @@ class PortfolioHandler(object):
         action = fill_event.action
         ticker = fill_event.ticker
         quantity = fill_event.quantity
+        price = fill_event.price
         commission = fill_event.commission
 
         self.portfolio.transact_position(
@@ -55,7 +53,7 @@ class PortfolioHandler(object):
 
         initial_order = self._create_order_from_signal(signal_event)
 
-        sized_order = self.position_sizer.size_oder(
+        sized_order = self.position_sizer.size_order(
             self.portfolio, initial_order
         )
 

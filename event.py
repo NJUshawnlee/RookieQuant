@@ -14,6 +14,7 @@ class Event(object):
 class TickEvent(Event):
     pass
 
+
 class BarEvent(Event):
     
     def __init__(
@@ -32,6 +33,7 @@ class BarEvent(Event):
         self.volume = volume
         self.adj_close_price = adj_close_price    
 
+
 class SignalEvent(Event):
     
     def __init__(self, ticker, action, suggested_quantity=None):
@@ -40,6 +42,7 @@ class SignalEvent(Event):
         self.ticker = ticker
         self.action = action
         self.suggested_quantity = suggested_quantity
+
 
 class OrderEvent(Event):
     
@@ -68,7 +71,7 @@ class FillEvent(Event):
         commission
     ):
 
-        self.type =EventType.FILL
+        self.type = EventType.FILL
         self.timestamp = timestamp
         self.ticker = ticker
         self.action = action

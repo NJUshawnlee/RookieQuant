@@ -1,6 +1,4 @@
-import sys
-sys.path.append("..")
-from statistics_report.base import AbstractStatistics
+from RookieQuant.statistics_report.base import AbstractStatistics
 
 
 import datetime
@@ -49,6 +47,7 @@ class BasicStatisticsReport(AbstractStatistics):
         statistics["sharpe"] = self.calculate_sharpe()
         statistics["drawdowns"] = pd.Series(self.drawdowns, index=timeseries)
         statistics["max_drawdown"] = max(self.drawdowns)
+        statistics["max_drawdown_pct"] = self.calculate_max_drawdown_pct()
         statistics["equity"] = pd.Series(self.equity, index=timeseries)
         statistics["equity_returns"] = pd.Series(self.equity_returns, index=timeseries)
 
@@ -73,8 +72,8 @@ class BasicStatisticsReport(AbstractStatistics):
         try:
             top_index = equity_series[:bottom_index].idxmax()
             pct = (
-                (equity_series.ix[top_index] - equity_series.ix[bottom_index]) /
-                equity_series.ix[top_index] * 100
+                ((equity_series.ix[top_index] - equity_series.ix[bottom_index]) /
+                equity_series.ix[top_index] )* 100
             )
             return round(pct, 4)
         except ValueError:

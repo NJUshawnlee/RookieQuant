@@ -35,12 +35,14 @@ class BarDataHandlerBase(DataHandlerBase):
         
         if ticker in self.tickers:
             close_price = self.tickers[ticker]["close"]
+
         else:
             print(
                 "Close price for ticker %s in not"
                 "available from BarDataHandler." % ticker
             )
-        return None
+
+        return close_price
 
     def _store_event_price(self, event):
         pass

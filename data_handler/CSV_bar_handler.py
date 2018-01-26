@@ -1,10 +1,9 @@
 import os
 import pandas as pd
-import sys
-sys.path.append("..")
 
-from  data_handler.base import BarDataHandlerBase
-from  event import BarEvent
+from RookieQuant.data_handler.base import BarDataHandlerBase
+from RookieQuant.event import BarEvent
+
 
 class CsvBarDataHandler(BarDataHandlerBase):
 
@@ -72,9 +71,8 @@ class CsvBarDataHandler(BarDataHandlerBase):
             )
 
     def _merge_sort_ticker_data(self):
-        
 
-        df = pd.concat(self.tickers_data.values()).sort_index
+        df = pd.concat(self.tickers_data.values()).sort_index()
         start = None
         end = None
         if self.start_time is not None:
@@ -95,7 +93,6 @@ class CsvBarDataHandler(BarDataHandlerBase):
 
     def _create_event(self, index, ticker, row):
 
-
         period = self.period
         open_price = row["Open"]
         high_price = row["High"]
@@ -109,10 +106,12 @@ class CsvBarDataHandler(BarDataHandlerBase):
             volume, adj_close_price
         )
 
+        return bev
+
     def _store_event(self, event):
 
         ticker = event.ticker
-        self.tickers[ticker]["close"] = event.close
+        self.tickers[ticker]["close"] = event.close_price
         self.tickers[ticker]["adj_close"] = event.adj_close_price
         self.tickers[ticker]["timestamp"] = event.time
     

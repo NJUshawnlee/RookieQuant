@@ -1,7 +1,4 @@
-import sys
-sys.path.append("..")
-
-from position_sizer.base import AbstractPositionSizer
+from RookieQuant.position_sizer.base import AbstractPositionSizer
 
 
 class FixedPositionSizer(AbstractPositionSizer):
