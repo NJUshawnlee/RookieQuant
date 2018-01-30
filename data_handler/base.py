@@ -1,7 +1,6 @@
 from abc import ABCMeta
 
 
-
 class DataHandlerBase(object):
 
     __metaclass__ = ABCMeta
@@ -21,7 +20,7 @@ class DataHandlerBase(object):
             )
 
 
-    pass
+
 
 class BarDataHandlerBase(DataHandlerBase):
 

@@ -79,6 +79,45 @@ class BasicStatisticsReport(AbstractStatistics):
         except ValueError:
             return np.nan
 
+    def plot_results(self):
+
+        sns.set()
+        fig = plt.figure()
+
+
+        df = pd.DataFrame()
+        df["equity"] = pd.Series(self.equity, index=self.timeseries)
+        df["equity_returns"] = pd.Series(self.equity_returns, index=self.timeseries)
+        df["drawdowns"] = pd.Series(self.drawdowns, index=self.timeseries)
+
+        ax1 = fig.add_subplot(221, ylabel='Equity')
+        df["equity"].plot(ax=ax1, color=sns.color_palette()[0])
+
+        ax2 = fig.add_subplot(222, ylabel='Equity Returns')
+        df["equity_returns"].plot(ax=ax2, color=sns.color_palette()[1])
+
+        ax3 = fig.add_subplot(223, ylabel='Drawdowns')
+        df["drawdowns"].plot(ax=ax3, color=sns.color_palette()[2])
+
+        plt.show()
+
+    def calculate_active_sharp(self):
+            pass
+
+    def calculate_tracking_error(self):
+            pass
+
+    def calculate_residual_risk(self):
+            pass
+
+
+
+
+
+
+
+
+
 
 
 

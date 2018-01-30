@@ -18,7 +18,7 @@ class TradingBacktesting(object):
         data_handler=None, portfolio_handler=None,
         position_sizer=None, execution_handler=None,
         risk_manager=None, statistics=None,
-        title=None, benchmark=None
+        title=None, benchmark=None, dir=None
     ):
 
         self.strategy = strategy
@@ -35,6 +35,7 @@ class TradingBacktesting(object):
         self.statistics = statistics
         self.title = title
         self.benchmark = benchmark
+        self.dir = dir
         self._config_settings()
         self.cur_time = None
     
@@ -42,12 +43,11 @@ class TradingBacktesting(object):
 
         if self.data_handler is None:
             self.data_handler = CsvBarDataHandler(
-            csv_dir="H:\Github\RookieQuant\data",
-            events_queue=self.events_queue,
-            init_tickers=self.tickers,
-            start_time=self.start_time,
-            end_time=self.end_time
-            )
+            self.dir,
+            self.events_queue,
+            self.tickers,
+            self.start_time,
+            self.end_time)
 
         if self.position_sizer is None:
             self.position_sizer = FixedPositionSizer()
@@ -112,11 +112,10 @@ class TradingBacktesting(object):
         results = self.statistics.get_results()
         print("---------------------------------")
         print("Backtest complete.")
-        print(results['drawdowns'])
         print("Sharpe Ratio: %0.2f" % results["sharpe"])
-        print("Max Drawdown: %0.2f" % results["max_drawdown"])
         print(
             "Max Drawdown: %0.2f%%" % (
                 results["max_drawdown_pct"]
             )
         )
+        self.statistics.plot_results()
