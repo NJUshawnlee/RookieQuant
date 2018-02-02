@@ -54,7 +54,7 @@ class PortfolioHandler(object):
         initial_order = self._create_order_from_signal(signal_event)
 
         sized_order = self.position_sizer.size_order(
-            self.portfolio, initial_order
+            self.portfolio, initial_order, self.data_handler
         )
 
         order_events = self.risk_manager.refine_orders(

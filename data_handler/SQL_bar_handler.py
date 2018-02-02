@@ -19,14 +19,14 @@ class SqlBarDataHandler(DataFrameDataHandler):
 
     def __init__(self, sql_config, sql_cmd, sql_start_time, sql_end_time, events_queue,
                  init_tickers=None, start_time=None, end_time=None, period=86400,
-                 calc_adj_returns=False):
+                 record_hist_prices=False, record_hist_returns=False, record_hist_volume=False):
         self.sql_config = sql_config
         self.sql_cmd = sql_cmd
         self.cursor = pyodbc.connect(self.sql_config)
         self.sql_start_time = sql_start_time
         self.sql_end_time = sql_end_time
         super().__init__(events_queue, init_tickers, start_time, end_time,
-                         period, calc_adj_returns)
+                         period, record_hist_prices, record_hist_returns, record_hist_volume)
         self.sql_cmd = sql_cmd
 
     def get_data_from_sql(self, ticker):

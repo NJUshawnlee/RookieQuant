@@ -8,11 +8,12 @@ class CsvBarDataHandler(DataFrameDataHandler):
 
     def __init__(
         self,  csv_dir, events_queue, init_tickers,
-        start_time=None, end_time=None, period=86400, calc_adj_returns=False
+        start_time=None, end_time=None, period=86400,
+        record_hist_prices=False, record_hist_returns=False, record_hist_volume=False
     ):
         self.csv_dir = csv_dir
         super().__init__(events_queue, init_tickers, start_time, end_time,
-                         period, calc_adj_returns)
+                         period, record_hist_prices, record_hist_returns, record_hist_volume)
 
         self.continue_backtest = True
         self.tickers = {}

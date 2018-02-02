@@ -31,7 +31,7 @@ class BarDataHandlerBase(DataHandlerBase):
         return True
 
     def get_last_close(self, ticker):
-        
+
         if ticker in self.tickers:
             close_price = self.tickers[ticker]["close"]
 

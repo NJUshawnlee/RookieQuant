@@ -3,6 +3,7 @@ import pandas as pd
 from RookieQuant.data_handler.CSV_bar_handler import CsvBarDataHandler
 import pyodbc
 import pandas as pd
+import numpy as np
 
 #
 # index_col = 0, names = (
@@ -31,6 +32,9 @@ df.index = date_column
 df.drop('Date', axis=1, inplace=True)
 df['Adj Close'] = df['Close']
 print(df)
+a = np.array([-1 for i in range(100)])
+b = np.array([(1, 1), (1, 1)])
+print(b[0])
 
 
 

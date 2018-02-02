@@ -11,7 +11,7 @@ class DataFrameDataHandler(BarDataHandlerBase):
 
     def __init__(self, events_queue, init_tickers,
                  start_time, end_time, period,
-                 calc_adj_returns
+                 record_hist_prices, record_hist_returns, record_hist_volume
                  ):
         self.continue_backtest = True
         self.events_queue = events_queue
@@ -19,15 +19,15 @@ class DataFrameDataHandler(BarDataHandlerBase):
         self.start_time = start_time
         self.end_time = end_time
         self.period = period
-        self.calc_adj_returns = calc_adj_returns
         self.tickers = {}
         self.tickers_data = {}
+        self.record_hist_prices = record_hist_prices
+        self.record_hist_returns = record_hist_returns
+        self.record_hist_volume  = record_hist_volume
         if init_tickers is not None:
             for ticker in init_tickers:
                 self.subscribe_ticker(ticker)
         self.bar_stream = self._merge_sort_ticker_data()
-        if self.calc_adj_returns:
-            self.adj_close_returns = []
 
     @abstractmethod
     def get_dataframe_bar_data(self, ticker):
@@ -48,7 +48,10 @@ class DataFrameDataHandler(BarDataHandlerBase):
                 ticker_prices = {
                     "close": close,
                     "adj_close": adj_close,
-                    "timestamp": dft.index[0]
+                    "timestamp": dft.index[0],
+                    "return_series": [],
+                    "price_series": [],
+                    "volume_series": []
                 }
                 self.tickers[ticker] = ticker_prices
 
@@ -104,6 +107,22 @@ class DataFrameDataHandler(BarDataHandlerBase):
     def _store_event(self, event):
 
         ticker = event.ticker
+
+        if self.record_hist_prices:
+            time = event.time
+            self.tickers[ticker]["price_series"].append((time, event.close_price))
+
+        if self.record_hist_returns:
+            prev_adj_close = self.tickers[ticker]["adj_close"]
+            cur_adj_close = event.adj_close_price
+            self.tickers[ticker]["adj_close_return"] = cur_adj_close / prev_adj_close - 1.0
+            time = event.time
+            self.tickers[ticker]["return_series"].append((time, self.tickers[ticker]["adj_close_return"]))
+
+        if self.record_hist_volume:
+            time = event.time
+            self.tickers[ticker]["volume_series"].append((time, event.volume))
+
         self.tickers[ticker]["close"] = event.close_price
         self.tickers[ticker]["adj_close"] = event.adj_close_price
         self.tickers[ticker]["timestamp"] = event.time

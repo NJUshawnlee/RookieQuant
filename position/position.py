@@ -68,7 +68,7 @@ class Position(object):
                     price * quantity + commission
                 ) / (self.buys + quantity)
 
-            elif  self.action == "SLD":
+            elif self.action == "SLD":
                 self.realized_pnl += quantity*(
                 self.avg_price - price
                 ) - commission

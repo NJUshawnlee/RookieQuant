@@ -89,6 +89,8 @@ class BasicStatisticsReport(AbstractStatistics):
         df["equity"] = pd.Series(self.equity, index=self.timeseries)
         df["equity_returns"] = pd.Series(self.equity_returns, index=self.timeseries)
         df["drawdowns"] = pd.Series(self.drawdowns, index=self.timeseries)
+        max_drawdown_pict = self.calculate_max_drawdown_pct()
+        df["max_drawdown_pct"] = pd.Series(max_drawdown_pict, index=self.timeseries)
 
         ax1 = fig.add_subplot(221, ylabel='Equity')
         df["equity"].plot(ax=ax1, color=sns.color_palette()[0])
@@ -98,6 +100,9 @@ class BasicStatisticsReport(AbstractStatistics):
 
         ax3 = fig.add_subplot(223, ylabel='Drawdowns')
         df["drawdowns"].plot(ax=ax3, color=sns.color_palette()[2])
+
+        ax4 = fig.add_subplot(224, ylabel="max_drawdown_pct")
+        df["max_drawdown_pct"].plot(ax=ax4, color=sns.color_palette()[3])
 
         plt.show()
 
