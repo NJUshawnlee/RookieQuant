@@ -15,6 +15,7 @@ class PortfolioHandler(object):
         self.position_sizer = position_sizer
         self.risk_manager = risk_manager
         self.portfolio = Portfolio(data_handler, initial_cash)
+        self.trading_log = []
 
     def _create_order_from_signal(self, signal_event):
 
@@ -37,12 +38,15 @@ class PortfolioHandler(object):
 
     def _convert_fill_to_portfolio_update(self, fill_event):
         
-
+        excution_time = fill_event.timestamp
         action = fill_event.action
         ticker = fill_event.ticker
         quantity = fill_event.quantity
         price = fill_event.price
         commission = fill_event.commission
+
+        self.trading_log.append((excution_time, action, ticker,
+                                 quantity, price, commission))
 
         self.portfolio.transact_position(
             action, ticker, quantity,
@@ -67,6 +71,14 @@ class PortfolioHandler(object):
         self._convert_fill_to_portfolio_update(fill_event)     
 
     def update_portfolio_value(self):
+         self.portfolio._update_portfolio()
 
-        self.portfolio._update_portfolio()
+    def print_trading_log(self):
+        for i in range(self.trading_log.__len__()):
+            log = self.trading_log[i]
+            trading_record = "%s Time: %s  Action: %s  Ticker: %s  " \
+                             "Quantity: %s  Price: %s  Commision: %s" % \
+                             (i+1, log[0], log[1], log[2],
+                              log[3], log[4], log[5])
+            print(trading_record)
 

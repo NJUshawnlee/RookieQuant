@@ -36,7 +36,7 @@ class Portfolio(object):
                 pt.market_value - pt.cost_basis + pt.realized_pnl
             )
 
-    def  _add_position(
+    def _add_position(
         self, action, ticker,
         quantity, price, commission
     ):

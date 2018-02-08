@@ -22,8 +22,6 @@ class CsvBarDataHandler(DataFrameDataHandler):
             for ticker in init_tickers:
                 self.subscribe_ticker(ticker)
         self.bar_stream = self._merge_sort_ticker_data()
-        if self.calc_adj_returns:
-            self.adj_close_returns = []
 
     def _open_ticker_price_csv(self, ticker):
         

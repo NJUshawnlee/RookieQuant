@@ -7,6 +7,7 @@ from RookieQuant.risk_manager.NoneRiskManager import NoneRiskManager
 from RookieQuant.portfolio_processing.portfolio_handler import PortfolioHandler
 from RookieQuant.execution_handler.exchange_simulated import ExchangeSimulatedExecutionHandler
 from RookieQuant.statistics_report.BasicStatistics import BasicStatisticsReport
+from RookieQuant.portfolio_processing.benchmark_portfolio import BenchmarkPortfolio
 
 
 
@@ -18,7 +19,7 @@ class TradingBacktesting(object):
         data_handler=None, portfolio_handler=None,
         position_sizer=None, execution_handler=None,
         risk_manager=None, statistics=None,
-        title=None, benchmark=None, dir=None
+        title=None, benchmark=None, dir=None, print_trading_log=False
     ):
 
         self.strategy = strategy
@@ -36,6 +37,7 @@ class TradingBacktesting(object):
         self.title = title
         self.benchmark = benchmark
         self.dir = dir
+        self.print_trading_log = print_trading_log
         self._config_settings()
         self.cur_time = None
     
@@ -75,6 +77,15 @@ class TradingBacktesting(object):
             self.statistics = BasicStatisticsReport(
                 self.portfolio_handler
             )
+
+        if self.benchmark is None:
+            self.benchmark = BenchmarkPortfolio(
+                data_handler=self.data_handler,
+                risk_free_rate=0.035,
+                bench_equity={'SP500': 1.0},
+                cash_pct=0.20,
+                equity_pct=0.80
+            )
     
 
     def _continue_loop_condition(self):
@@ -95,7 +106,11 @@ class TradingBacktesting(object):
 
                         self.strategy.calculate_signals(event)
                         self.portfolio_handler.update_portfolio_value()
-                        self.statistics.update(event.time, self.portfolio_handler)
+
+                        self.benchmark.update_benchmark_value(self.start_time, event.time)
+
+                        self.statistics.update(event.time,
+                                               self.portfolio_handler, self.benchmark)
 
                     elif event.type == EventType.SIGNAL:
                         self.portfolio_handler.on_signal(event)
@@ -105,6 +120,9 @@ class TradingBacktesting(object):
                         self.portfolio_handler.on_fill(event)
                 else:
                     raise NotImplemented("Unsupported event.type '%s'" % event.type)
+
+        if self.print_trading_log == True:
+            self.portfolio_handler.print_trading_log()
 
     def start_trading(self):
 

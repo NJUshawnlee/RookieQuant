@@ -20,13 +20,14 @@ class BasicStatisticsReport(AbstractStatistics):
         self.equity_returns = [0.0]
         self.net_equity = [1.0]
         self.timeseries = ["0000-00-00 00:00:00"]
+        self.benchmark_value = [1.0]
 
 
         current_equity = portfolio_handler.portfolio.equity
         self.high_water_mark = [current_equity]
         self.equity.append(current_equity)
 
-    def update(self, timestamp, portfolio_handler):
+    def update(self, timestamp, portfolio_handler, benchmark):
 
         if timestamp != self.timeseries[-1]:
 
@@ -44,6 +45,21 @@ class BasicStatisticsReport(AbstractStatistics):
             self.drawdowns.append(self.high_water_mark[-1]-self.equity[-1])
             self.drawdowns_pct.append(-self.drawdowns[-1]/self.high_water_mark[-1])
 
+        cur_equity_value = 0.0
+        if benchmark.bench_equity is not None:
+            for ticker, pct in benchmark.bench_equity.items():
+                cur_equity_value += benchmark.equity_value[ticker][-1] \
+                                / benchmark.equity_value[ticker][0] * pct
+
+        cur_bond_value = 0.0
+        if benchmark.bench_bond is not None:
+            for ticker, pct in benchmark.bench_bond.items():
+                cur_bond_value += benchmark.bond_value[ticker][-1] \
+                              / benchmark.bond_value[ticker][0] * pct
+
+        self.benchmark_value.append(benchmark.cash_pct * benchmark.cash + \
+                               benchmark.equity_pct * cur_equity_value + \
+                               benchmark.bond_pct * cur_bond_value)
 
     def get_results(self):
 
@@ -95,6 +111,7 @@ class BasicStatisticsReport(AbstractStatistics):
         df = pd.DataFrame()
         df["equity"] = pd.Series(self.equity, index=self.timeseries)
         df["net_equity"] = pd.Series(self.net_equity, index=self.timeseries)
+        df["benchmark"] =  pd.Series(self.benchmark_value, index=self.timeseries)
         df["drawdowns"] = pd.Series(self.drawdowns, index=self.timeseries)
         df["drawdowns_pct"] = pd.Series(self.drawdowns_pct, index=self.timeseries)
 
@@ -106,6 +123,7 @@ class BasicStatisticsReport(AbstractStatistics):
 
         ax2 = fig.add_subplot(222, ylabel='Net Equity')
         df["net_equity"].plot(ax=ax2, color=current_palette[1], label='Net Equity')
+        df["benchmark"].plot(ax=ax2, color=current_palette[2], label='Benchmark')
         ax2.yaxis.grid(linestyle=':')
         ax2.xaxis.grid(linestyle=':')
         ax2.axhline(y=1, color=current_palette[1], linestyle='dashed')
@@ -120,7 +138,7 @@ class BasicStatisticsReport(AbstractStatistics):
         ax4 = fig.add_subplot(224, ylabel="Drawdown pct")
         ax4.yaxis.grid(linestyle=':')
         ax4.xaxis.grid(linestyle=':')
-        df["drawdowns_pct"].plot(ax=ax4, kind='area', alpha=0.3,
+        df["drawdowns_pct"].plot(ax=ax4, kind='area', alpha=0.5,
                                  color=current_palette[2], label='Drawndown Pct')
         ax4.legend()
         plt.show()
