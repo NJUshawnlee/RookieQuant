@@ -123,6 +123,7 @@ class DataFrameDataHandler(BarDataHandlerBase):
             time = event.time
             self.tickers[ticker]["volume_series"].append((time, event.volume))
 
+        self.tickers[ticker]["open"] = event.open_price
         self.tickers[ticker]["close"] = event.close_price
         self.tickers[ticker]["adj_close"] = event.adj_close_price
         self.tickers[ticker]["timestamp"] = event.time

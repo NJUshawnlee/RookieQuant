@@ -118,6 +118,12 @@ class TradingBacktesting(object):
                         self.execution_handler.execute_order(event)
                     elif event.type == EventType.FILL:
                         self.portfolio_handler.on_fill(event)
+                        if self.events_queue.empty():
+                            self.benchmark.update_benchmark_value(self.start_time, event.timestamp)
+                            self.statistics.update(event.timestamp,
+                                                   self.portfolio_handler, self.benchmark)
+
+
                 else:
                     raise NotImplemented("Unsupported event.type '%s'" % event.type)
 

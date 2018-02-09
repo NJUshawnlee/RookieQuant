@@ -30,6 +30,19 @@ class BarDataHandlerBase(DataHandlerBase):
     def isbar(self):
         return True
 
+    def get_last_open(self, ticker):
+
+        if ticker in self.tickers:
+            open_price = self.tickers[ticker]["open"]
+
+        else:
+            print(
+                "Open price for ticker %s in not"
+                "available from BarDataHandler." % ticker
+            )
+
+        return open_price
+
     def get_last_close(self, ticker):
 
         if ticker in self.tickers:

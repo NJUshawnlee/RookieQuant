@@ -45,19 +45,19 @@ class BuyAndHoldStrategy(AbstractStrategy):
                 self.invested = True
             self.bars += 1
 
-        elif (
-            # will be corrected when tick data_handler to be added latter
-            event.type is EventType.BAR
-            and event.ticker == self.tickers[1]
-        ):
-            if self.bars < 1:
-                signal = SignalEvent(
-                    self.tickers[1], "BOT",
-                    suggested_quantity=self.base_quantity
-                )
-                self.events_queue.put(signal)
-                self.invested = True
-            self.bars += 1
+        # elif (
+        #     # will be corrected when tick data_handler to be added latter
+        #     event.type is EventType.BAR
+        #     and event.ticker == self.tickers[1]
+        # ):
+        #     if self.bars < 1:
+        #         signal = SignalEvent(
+        #             self.tickers[1], "BOT",
+        #             suggested_quantity=self.base_quantity
+        #         )
+        #         self.events_queue.put(signal)
+        #         self.invested = True
+        #     self.bars += 1
 
 
 def run(tickers):
